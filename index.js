@@ -25,6 +25,7 @@ async function run() {
 
     const db = client.db('task-management')
     const userCollection = db.collection('users');
+    const taskCollection = db.collection('tasks');
 
     // save users in db
     app.post('/users',async(req,res)=>{
@@ -42,6 +43,19 @@ async function run() {
     // get all user
     app.get('/users', async(req,res)=>{
         const result = await userCollection.find().toArray();
+        res.send(result);
+    })
+
+    // save tasks in db
+    app.post('/tasks', async(req,res)=>{
+        const task = req.body;
+        const result = await taskCollection.insertOne(task);
+        res.send(result);
+    })
+
+    // get all tasks
+    app.get('/tasks', async(req,res)=>{
+        const result = await taskCollection.find().toArray();
         res.send(result);
     })
 
