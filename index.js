@@ -86,31 +86,67 @@ async function run() {
     // update task
     app.put("/tasks/:id", async (req, res) => {
         const { id } = req.params;
-        const { category } = req.body;
+        const { category,title,description } = req.body;
     
         const filter = { _id: new ObjectId(id) };
         const updateDoc = {
-            $set: { category: category }
+            $set: { category: category,
+                title: title,
+                description: description
+             }
         };
     
         const result = await taskCollection.updateOne(filter, updateDoc);
         res.send(result);
     });
 
+    // delete a task
+    app.delete('/tasks/:id',async(req,res)=>{
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)};
+        const result = await taskCollection.deleteOne(query);
+        res.send(result);
+    })
+
     // get all Task a specific user
     app.get('/tasks/:email',async(req,res)=>{
         const email = req.params.email;
-        const query = {agentEmail: email};
+        const query = {email: email};
         const result = await taskCollection.find(query).toArray();
         res.send(result);
     })
 
+    // get a task
+    app.get('/task/:id', async(req,res)=>{
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)}
+        const result = await taskCollection.findOne(query);
+        res.send(result);
+    })
+
+    // update a for user
+    // app.patch('//:id', async(req,res)=>{
+    //     const id = req.params.id;
+    //     const property = req.body;
+    //     const filter = {_id: new ObjectId(id)};
+    //     const update = {
+    //         $set: {
+    //             title: property.title,
+    //             location: property.location,
+    //             price: property.price,
+    //             image: property.image,
+    //         }
+    //     }
+    //     const result = await propertyCollection.updateOne(filter,update);
+    //     res.send(result);
+    // })
+
 
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // await client.db("admin").command({ ping: 1 });
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
