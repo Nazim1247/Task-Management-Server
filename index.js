@@ -53,30 +53,6 @@ async function run() {
         res.send(result);
     })
 
-    // app.post('/tasks', (req, res) => {
-    //     const { title, description, category } = req.body;
-    
-    //     // Input Validation
-    //     if (!title || title.length > 50) {
-    //         return res.status(400).json({ error: "Title is required and must be within 50 characters." });
-    //     }
-    //     if (description && description.length > 200) {
-    //         return res.status(400).json({ error: "Description must be within 200 characters." });
-    //     }
-    
-    //     // Create New Task
-    //     const newTask = {
-    //         id: tasks.length + 1, // Simple unique ID
-    //         title,
-    //         description: description || "",
-    //         timestamp: new Date().toISOString(),
-    //         category: category || "To-Do",
-    //     };
-    
-    //     tasks.push(newTask);
-    //     res.status(201).json(newTask);
-    // });
-
     // get all tasks
     app.get('/tasks', async(req,res)=>{
         const result = await taskCollection.find().toArray();
@@ -123,23 +99,6 @@ async function run() {
         const result = await taskCollection.findOne(query);
         res.send(result);
     })
-
-    // update a for user
-    // app.patch('//:id', async(req,res)=>{
-    //     const id = req.params.id;
-    //     const property = req.body;
-    //     const filter = {_id: new ObjectId(id)};
-    //     const update = {
-    //         $set: {
-    //             title: property.title,
-    //             location: property.location,
-    //             price: property.price,
-    //             image: property.image,
-    //         }
-    //     }
-    //     const result = await propertyCollection.updateOne(filter,update);
-    //     res.send(result);
-    // })
 
 
     // Connect the client to the server	(optional starting in v4.7)
